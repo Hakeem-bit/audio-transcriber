@@ -1,0 +1,69 @@
+{
+  "name": "audio-transcriber",
+  "displayName": "Audio Transcriber",
+  "description": "Transcribe audio files to text using OpenAI Whisper API",
+  "version": "0.1.0",
+  "publisher": "audio-transcriber",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "audio",
+    "transcription",
+    "whisper",
+    "openai",
+    "speech-to-text"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "audioTranscriber.transcribe",
+        "title": "Transcribe Audio File",
+        "category": "Audio Transcriber"
+      }
+    ],
+    "configuration": {
+      "title": "Audio Transcriber",
+      "properties": {
+        "transcriber.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Your OpenAI API key for Whisper transcription. Get one at https://platform.openai.com/api-keys",
+          "markdownDescription": "Your OpenAI API key for Whisper transcription. Get one at [platform.openai.com/api-keys](https://platform.openai.com/api-keys)"
+        },
+        "transcriber.model": {
+          "type": "string",
+          "default": "whisper-1",
+          "description": "The OpenAI Whisper model to use for transcription",
+          "enum": ["whisper-1"],
+          "enumDescriptions": ["OpenAI Whisper v1 - supports MP3, WAV, M4A, OGG, FLAC"]
+        },
+        "transcriber.language": {
+          "type": "string",
+          "default": "",
+          "description": "Optional: language of the audio (e.g. 'en', 'fr', 'es'). Leave blank for auto-detection."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "openai": "^4.28.0"
+  }
+}
