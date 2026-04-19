@@ -1,5 +1,6 @@
+import * as path from 'path';
 import * as vscode from 'vscode';
-import { transcribeAudioFile } from './transcriber';
+import { transcribeAudioFile, SUPPORTED_AUDIO_EXTENSIONS } from './transcriber';
 
 export function activate(context: vscode.ExtensionContext): void {
   const disposable = vscode.commands.registerCommand(
@@ -29,7 +30,7 @@ export function activate(context: vscode.ExtensionContext): void {
         openLabel: 'Transcribe',
         title: 'Select an Audio File to Transcribe',
         filters: {
-          'Audio Files': ['mp3', 'wav', 'm4a', 'ogg', 'flac', 'webm'],
+          'Audio Files': [...SUPPORTED_AUDIO_EXTENSIONS],
         },
       });
 
@@ -48,7 +49,7 @@ export function activate(context: vscode.ExtensionContext): void {
         },
         async (progress) => {
           try {
-            progress.report({ message: `Transcribing ${audioUri.path.split('/').pop()}…` });
+            progress.report({ message: `Transcribing ${path.basename(audioUri.fsPath)}…` });
 
             const language = config.get<string>('transcriber.language', '') || undefined;
             const model = config.get<string>('transcriber.model', 'whisper-1');

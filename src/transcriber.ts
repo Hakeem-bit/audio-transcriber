@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import OpenAI from 'openai';
 
+export const SUPPORTED_AUDIO_EXTENSIONS = ['mp3', 'wav', 'm4a', 'ogg', 'flac', 'webm'] as const;
+
 export interface TranscribeOptions {
   apiKey: string;
   audioPath: string;
@@ -28,12 +30,10 @@ export async function transcribeAudioFile(
     throw new Error(`Audio file not found: ${audioPath}`);
   }
 
-  // Validate file extension
   const ext = path.extname(audioPath).toLowerCase().replace('.', '');
-  const supported = ['mp3', 'wav', 'm4a', 'ogg', 'flac', 'webm'];
-  if (!supported.includes(ext)) {
+  if (!SUPPORTED_AUDIO_EXTENSIONS.includes(ext as typeof SUPPORTED_AUDIO_EXTENSIONS[number])) {
     throw new Error(
-      `Unsupported audio format: .${ext}. Supported formats: ${supported.join(', ')}`
+      `Unsupported audio format: .${ext}. Supported formats: ${SUPPORTED_AUDIO_EXTENSIONS.join(', ')}`
     );
   }
 
